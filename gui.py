@@ -31,17 +31,26 @@ file_list_column = [
         sg.FolderBrowse(initial_folder="~/"),
     ],
     [
-        sg.Button(
-            "Resize Images",
+        sg.Text("Select Preprocessing Algorithm"),
+        sg.Combo(
+            ["Flip", "Resize", "Rotate"],
+            default_value="Resize",
             enable_events=True,
-            key="RESIZE",
+            key="COMBO",
+        )
+    ],
+    [
+        sg.Button(
+            "Run Preprocess",
+            enable_events=True,
+            key="PREPROCESS",
         ),
     ],
 ]
 
 image_viewer_column = [
-    [sg.Text("Choose an image from list on left: ")],
-    [sg.Text(size=(40, 1), key=KEY_TOUT)],
+    [sg.Text("Preprocessing")],
+    [sg.Text("waiting...", size=(40, 1), key=KEY_TOUT)],
     [sg.Image(key=KEY_IMAGE)],
 ]
 
@@ -53,11 +62,12 @@ layout = [
     ]
 ]
 
-window = sg.Window("Image Viewer", layout)
+window = sg.Window("Image Data Preprocessor", layout)
 
 
 input_dir_path: str = ''
 output_dir_path: str = ''
+preprocess_algorithm: str = ''
 
 while True:
     event, values = window.read()
@@ -68,13 +78,19 @@ while True:
             input_dir_path = values.get(event)
         elif event == "OUTPUT-DIR":
             output_dir_path = values.get(event)
-        elif event == "RESIZE":
+        elif event == "COMBO":
+            preprocess_algorithm: str = values.get(event)
+            if preprocess_algorithm == "Resize":
+                pass
+        elif event == "PREPROCESS":
             input_files: List[str] = os.listdir(input_dir_path)
-            print("test", input_files)
             image_preprocess = Image(
                 input_dir_path=input_dir_path,
                 output_dir_path=output_dir_path,
             )
-            image_preprocess.preprocess(input_files=input_files)
+            result: bool = image_preprocess.preprocess(input_files=input_files)
+            if result:
+                window[KEY_TOUT].update("Complete!!!")
+
 
 window.close()

@@ -1,7 +1,5 @@
 from __future__ import annotations
-import os
 from typing import List
-
 
 from PIL import Image as p_img
 
@@ -21,9 +19,13 @@ class Image:
         *,
         input_files: List[str],
     ):
-        for file in input_files:
-            resized_image_instance = self.resize(file)
-            self._save(resized_image_instance, file)
+        try:
+            for file in input_files:
+                resized_image_instance = self.resize(file)
+                self._save(resized_image_instance, file)
+            return True
+        except Exception:
+            return False
 
     def resize(
         self,
