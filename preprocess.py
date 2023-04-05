@@ -32,7 +32,7 @@ class Image:
         input_file: str,
         *,
         width: int = 128,
-        height: int = 128
+        height: int = 128,
     ):
         image = p_img.open(f"{self._input_dir_path}/{input_file}")
         resized_image_instance = image.resize((width, height))

@@ -5,11 +5,13 @@ import PySimpleGUI as sg
 
 from preprocess import Image
 
-KEY_FOLDER = "-FOLDER-"
+
 KEY_FILELIST = "-FILE LIST-"
 KEY_TOUT = "-TOUT-"
 KEY_IMAGE = "-IMAGE-"
 
+# window 내부에 layout 만들고
+# while 문은 run 으로 뺌
 
 file_list_column = [
     [
